@@ -21,6 +21,7 @@ from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import (
     ATTR_ENTITY_ID,
     ATTR_TEMPERATURE,
+    EVENT_STATE_CHANGED,
     STATE_OFF,
     STATE_ON,
     UnitOfTemperature,
@@ -359,6 +360,26 @@ async def test_unavailable_after_failures(
     async_fire_time_changed(hass)
     await hass.async_block_till_done()
     assert hass.states.get(CLIMATE).state == "unavailable"
+
+
+async def test_steady_state_writes_nothing(
+    hass: HomeAssistant, heads: Heads, head: FakeHead, freezer: FrozenDateTimeFactory
+) -> None:
+    """Unchanged head data must not create state changes (recorder/logbook noise)."""
+    await setup_head(hass, head)
+    changes: list[str] = []
+
+    def _changed(event: Event[Any]) -> None:
+        old, new = event.data["old_state"], event.data["new_state"]
+        if old is None or new is None or (old.state, old.attributes) != (new.state, new.attributes):
+            changes.append(event.data["entity_id"])
+
+    hass.bus.async_listen(EVENT_STATE_CHANGED, _changed)
+    for _ in range(12):
+        freezer.tick(11)
+        async_fire_time_changed(hass)
+        await hass.async_block_till_done()
+    assert changes == []
 
 
 async def test_mqtt_discovery_issue(hass: HomeAssistant, heads: Heads, head: FakeHead) -> None:

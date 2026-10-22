@@ -306,7 +306,8 @@ class TandemStateSensor(HeatLinkOutdoorEntity, SensorEntity):
             names[group.self_member.uid] = group.self_member.name
         waiting = [m for m in tandem.members if m.directive == "hold"]
         remaining = None
-        if tandem.phase == "run" and tandem.elapsed_s is not None:
+        # A turn only ends while another room waits for it.
+        if waiting and tandem.phase == "run" and tandem.elapsed_s is not None:
             decide = tandem.decide_s or tandem.max_slice_s or 0
             remaining = max(0, decide - tandem.elapsed_s)
         self._turn_ends = stable_at(self._turn_ends, remaining)
