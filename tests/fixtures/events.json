@@ -1,0 +1,95 @@
+{
+  "events": [
+    {
+      "seq": 641,
+      "ts": 1792693787,
+      "up": 4675,
+      "cat": 10,
+      "act": 0,
+      "msg": "Device started v1.5.2 (sw)"
+    },
+    {
+      "seq": 640,
+      "ts": 1792693780,
+      "up": 4178252,
+      "cat": 6,
+      "act": 0,
+      "msg": "Firmware update installed - rebooting"
+    },
+    {
+      "seq": 639,
+      "ts": 1792693769,
+      "up": 4167103,
+      "cat": 6,
+      "act": 0,
+      "msg": "Firmware update started"
+    },
+    {
+      "seq": 638,
+      "ts": 1792689892,
+      "up": 289988,
+      "cat": 10,
+      "act": 1,
+      "msg": "Integration token \"rt-read\" revoked",
+      "name": "admin",
+      "ip": "192.168.1.20"
+    },
+    {
+      "seq": 637,
+      "ts": 1792689892,
+      "up": 289792,
+      "cat": 10,
+      "act": 1,
+      "msg": "Integration token \"rt-ctl\" revoked",
+      "name": "admin",
+      "ip": "192.168.1.20"
+    },
+    {
+      "seq": 636,
+      "ts": 1792689698,
+      "up": 96136,
+      "cat": 10,
+      "act": 1,
+      "msg": "Integration token \"rt-ctl\" created (control)",
+      "name": "admin",
+      "ip": "192.168.1.20"
+    },
+    {
+      "seq": 635,
+      "ts": 1792689698,
+      "up": 95855,
+      "cat": 10,
+      "act": 1,
+      "msg": "Integration token \"rt-read\" created (read)",
+      "name": "admin",
+      "ip": "192.168.1.20"
+    },
+    {
+      "seq": 634,
+      "ts": 1792689606,
+      "up": 4682,
+      "cat": 10,
+      "act": 0,
+      "msg": "Device started v1.5.0 (sw)"
+    },
+    {
+      "seq": 633,
+      "ts": 1792689600,
+      "up": 946145,
+      "cat": 6,
+      "act": 0,
+      "msg": "Firmware update installed - rebooting"
+    },
+    {
+      "seq": 632,
+      "ts": 1792689588,
+      "up": 934825,
+      "cat": 6,
+      "act": 0,
+      "msg": "Firmware update started"
+    }
+  ],
+  "now_epoch": 1792695273,
+  "clock_valid": true,
+  "seq": 641
+}

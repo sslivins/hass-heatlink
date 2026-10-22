@@ -1,0 +1,40 @@
+{
+  "active": true,
+  "temp": 17.399999618530273,
+  "n_fresh": 1,
+  "max": 4,
+  "sensors": [
+    {
+      "id": "A4:C1:38:00:00:01",
+      "kind": "bthome",
+      "name": "",
+      "fresh": true,
+      "temp": 17.399999618530273,
+      "humidity": 69,
+      "battery": 100,
+      "rssi": -63,
+      "temp_age_s": 31,
+      "seen_age_s": 31,
+      "stale_after_s": 600
+    }
+  ],
+  "pairing": {
+    "ble": {
+      "open": false,
+      "remaining_s": 0,
+      "nearby": []
+    },
+    "wifi": {
+      "open": false,
+      "remaining_s": 0,
+      "found": [],
+      "state": "idle",
+      "message": ""
+    }
+  },
+  "ble": {
+    "scanning": true,
+    "error": "",
+    "adverts": 29036
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "uid": "6dac",
+  "name": "Bedroom 1",
+  "hostname": "heatlink-6dac",
+  "model": "stamp-s3",
+  "fw": "1.5.2",
+  "api_version": 1,
+  "pv": 1,
+  "auth": {
+    "state": "claimed",
+    "web_login": true,
+    "open_climate": true,
+    "api_key": false,
+    "tokens": true
+  },
+  "features": [
+    "tokens",
+    "token_tickets",
+    "events",
+    "history",
+    "park",
+    "room_sensors",
+    "group",
+    "tandem",
+    "remote_temp",
+    "fault",
+    "shared_fields",
+    "mqtt_discovery_switch"
+  ],
+  "mqtt": {
+    "configured": true,
+    "discovery": true
+  },
+  "group": {
+    "ghash": "bb66e0db",
+    "label": "Bedrooms"
+  }
+}

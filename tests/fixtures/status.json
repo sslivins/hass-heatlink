@@ -1,0 +1,37 @@
+{
+  "version": "1.5.2",
+  "hostname": "heatlink-6dac",
+  "name": "Bedroom 1",
+  "ip": "192.168.1.151",
+  "ssid": "home-wifi",
+  "rssi": -67,
+  "tx_power_dbm": 20,
+  "tx_power_min_dbm": 2,
+  "tx_power_max_dbm": 20,
+  "unit_connected": true,
+  "mqtt_connected": true,
+  "mqtt_configured": true,
+  "uptime_s": 1473,
+  "free_heap": 8437423,
+  "power": {
+    "present": true,
+    "vbat_mv": 3792,
+    "vin_mv": 5006,
+    "vinout_mv": 0,
+    "input_mv": 5006,
+    "source": "vin",
+    "charging": false,
+    "battery_present": false
+  },
+  "diag": {
+    "boot_count": 143,
+    "brownout_count": 0,
+    "reset_reason": "sw",
+    "last_was_brownout": false,
+    "vin_min_mv": 4982,
+    "vin_min_ever_mv": 4346,
+    "vin_sag_count": 0,
+    "wifi_drop_count": 0,
+    "wifi_drops_24h": 0
+  }
+}

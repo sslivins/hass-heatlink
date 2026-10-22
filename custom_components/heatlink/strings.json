@@ -1,0 +1,228 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "description": "Enter the address of a HeatLink head.",
+        "data": {
+          "host": "[%key:common::config_flow::data::host%]"
+        },
+        "data_description": {
+          "host": "IP address or hostname, for example 192.168.1.50 or heatlink-6dac.local."
+        }
+      },
+      "token": {
+        "title": "Connect {name}",
+        "description": "On the head's web page ({url}) open **Settings → API Access**, create an integration token and paste it here. With **Full admin** access Home Assistant can also manage firmware updates, off-at-setpoint, Tandem and the activity log; **Climate control** only controls the unit.",
+        "data": {
+          "token": "Token"
+        }
+      },
+      "group_confirm": {
+        "title": "Add {name}",
+        "description": "{name} ({host}) shares the outdoor unit {label} with {peer}, which is already set up. Home Assistant will use {peer} to create a token on {name} for you."
+      },
+      "reauth_confirm": {
+        "title": "Reconnect {name}",
+        "description": "The token for {name} was rejected. Create a new integration token on the head's web page ({url}) under **Settings → API Access**.",
+        "data": {
+          "token": "Token"
+        }
+      },
+      "reconfigure": {
+        "description": "Change the address of this HeatLink head.",
+        "data": {
+          "host": "[%key:common::config_flow::data::host%]"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+      "invalid_auth": "The token was rejected. Check that it was copied completely and hasn't been revoked.",
+      "firmware_too_old": "This head's firmware is too old. Update it to 1.5.2 or later from its web page.",
+      "wrong_device": "That address belongs to a different HeatLink head."
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+      "firmware_too_old": "This head's firmware is too old. Update it to 1.5.2 or later from its web page.",
+      "not_heatlink": "This device is not a HeatLink head.",
+      "reauth_successful": "[%key:common::config_flow::abort::reauth_successful%]",
+      "reconfigure_successful": "[%key:common::config_flow::abort::reconfigure_successful%]"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "fast_poll": "Fast polling",
+          "remote_temp_entity": "Room temperature sensor"
+        },
+        "data_description": {
+          "fast_poll": "Read the unit every 5 seconds instead of every 10.",
+          "remote_temp_entity": "Send this sensor's temperature to the unit as the room temperature. Ignored while the head has its own Bluetooth room sensors."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "parked": { "name": "Parked" },
+      "held": { "name": "Waiting for Tandem" },
+      "defrost": { "name": "Defrosting" },
+      "fault": { "name": "Fault" },
+      "unit_connected": { "name": "Unit connected" },
+      "mode_conflict": { "name": "Mode conflict" }
+    },
+    "button": {
+      "reset_brownouts": { "name": "Reset brownout count" },
+      "reset_wifi_drops": { "name": "Reset Wi-Fi drop count" },
+      "reset_supply_voltage_min": { "name": "Reset minimum supply voltage" }
+    },
+    "climate": {
+      "heatlink": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "auto": "Auto",
+              "quiet": "Quiet",
+              "1": "1",
+              "2": "2",
+              "3": "3",
+              "4": "4"
+            }
+          }
+        }
+      }
+    },
+    "number": {
+      "park_delta": { "name": "Off-at-setpoint restart threshold" },
+      "park_min_off": { "name": "Off-at-setpoint minimum off time" },
+      "probe_interval": { "name": "Air check interval" },
+      "probe_duration": { "name": "Air check duration" },
+      "tandem_min_turn": { "name": "Tandem minimum turn" },
+      "tandem_max_turn": { "name": "Tandem maximum turn" },
+      "tandem_settle": { "name": "Tandem changeover pause" }
+    },
+    "sensor": {
+      "room_temperature": { "name": "Room temperature" },
+      "unit_temperature": { "name": "Unit temperature" },
+      "compressor_frequency": { "name": "Compressor frequency" },
+      "fault_code": {
+        "name": "Fault code",
+        "state": {
+          "none": "None",
+          "unknown": "Unknown"
+        }
+      },
+      "park_state": {
+        "name": "Off-at-setpoint",
+        "state": {
+          "disabled": "Disabled",
+          "off": "Off",
+          "running": "Running",
+          "parked": "Parked",
+          "probing": "Checking room",
+          "held": "Waiting for Tandem",
+          "checking": "Checking if the room needs a turn"
+        }
+      },
+      "tandem_turn_in": { "name": "Tandem turn in" },
+      "rssi": { "name": "Wi-Fi signal" },
+      "reset_reason": { "name": "Last reset reason" },
+      "brownouts": { "name": "Brownouts" },
+      "wifi_drops": { "name": "Wi-Fi drops" },
+      "boot_count": { "name": "Boot count" },
+      "supply_voltage_min": { "name": "Minimum supply voltage" },
+      "free_memory": { "name": "Free memory" },
+      "last_boot": { "name": "Last boot" },
+      "tandem_state": {
+        "name": "Tandem",
+        "state": {
+          "off": "Off",
+          "starting": "Starting",
+          "idle": "Idle",
+          "heating": "Heating",
+          "cooling": "Cooling",
+          "switching_to_heat": "Switching to heat",
+          "switching_to_cool": "Switching to cool"
+        }
+      },
+      "tandem_turn_ends": { "name": "Tandem turn ends in" }
+    },
+    "switch": {
+      "park": { "name": "Off-at-setpoint" },
+      "probe": { "name": "Air checks" },
+      "tandem": { "name": "Tandem" }
+    }
+  },
+  "exceptions": {
+    "scope": {
+      "message": "The token doesn't allow this. Use an admin token."
+    },
+    "conflict": {
+      "message": "The head refused: {message}"
+    },
+    "rejected": {
+      "message": "The head rejected the request: {message}"
+    },
+    "unreachable": {
+      "message": "Could not reach the head: {error}"
+    },
+    "firmware_too_old": {
+      "message": "The head's firmware is too old for this integration. Update it to 1.5.2 or later."
+    },
+    "wrong_device": {
+      "message": "{host} is now a different head ({uid}); waiting for this head to be found again."
+    },
+    "not_a_head": {
+      "message": "{entity_id} is not a HeatLink entity."
+    },
+    "no_update": {
+      "message": "No firmware update is available."
+    },
+    "update_busy": {
+      "message": "A firmware update is already running."
+    },
+    "update_failed": {
+      "message": "The firmware update failed: {message}"
+    },
+    "update_timeout": {
+      "message": "Timed out waiting for the firmware update."
+    }
+  },
+  "issues": {
+    "mqtt_discovery": {
+      "title": "{name} is also announced over MQTT",
+      "description": "{name} still publishes MQTT discovery, so Home Assistant shows it twice. Once the HeatLink integration's entities work for you, open {url}, go to **Settings → MQTT / Home Assistant**, turn off **Home Assistant discovery** and select **Save & reboot**. The MQTT entities are then removed."
+    },
+    "remote_temp_owned": {
+      "title": "{name} ignores the room temperature sensor",
+      "description": "{name} has its own Bluetooth room sensors, so it won't accept {entity}. Remove the sensor from the integration options, or unpair the head's Bluetooth sensors."
+    },
+    "update_failed": {
+      "title": "Firmware update of {name} didn't take",
+      "description": "{name} was asked to install {target} but came back on {version}. Check its web page for details and try again."
+    }
+  },
+  "services": {
+    "set_remote_temperature": {
+      "name": "Set room temperature",
+      "description": "Gives a head the room temperature to regulate on, for a limited time.",
+      "fields": {
+        "entity_id": {
+          "name": "Entity",
+          "description": "A climate (or any) entity of the HeatLink head."
+        },
+        "temperature": {
+          "name": "Temperature",
+          "description": "Room temperature in °C. Leave empty to stop and use the unit's own reading."
+        },
+        "ttl": {
+          "name": "Valid for",
+          "description": "Seconds the head uses this value before falling back to its own reading. Send it again before then."
+        }
+      }
+    }
+  }
+}

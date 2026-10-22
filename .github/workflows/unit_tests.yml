@@ -1,0 +1,30 @@
+name: Unit Tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[tests]"
+      - name: Lint (ruff)
+        run: ruff check custom_components/heatlink tests
+      - name: Type check (mypy)
+        run: mypy custom_components/heatlink
+      - name: Run unit tests with coverage
+        run: pytest --cov=custom_components/heatlink --cov-report=term-missing --cov-fail-under=70

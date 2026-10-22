@@ -1,0 +1,106 @@
+{
+  "group_id": "269afa9d14d93ec8a5f4723336cc281f",
+  "group_label": "Bedrooms",
+  "in_group": true,
+  "protocol_version": 1,
+  "self": {
+    "uid": "6dac",
+    "name": "Bedroom 1",
+    "configured_demand": "OFF",
+    "operating": false,
+    "standby": false,
+    "mode": "OFF",
+    "roomTemp": 17.399999618530273,
+    "targetTemp": 16,
+    "rs": "ok",
+    "ip": "192.168.1.151"
+  },
+  "members": [
+    {
+      "uid": "e6c8",
+      "name": "Primary",
+      "state": "known",
+      "configured_demand": "OFF",
+      "mode": "OFF",
+      "roomTemp": 18.899999618530273,
+      "targetTemp": 20,
+      "rs": "ok",
+      "ip": "192.168.1.108"
+    },
+    {
+      "uid": "e6ec",
+      "name": "Bedroom 2",
+      "state": "known",
+      "configured_demand": "OFF",
+      "mode": "OFF",
+      "roomTemp": 21,
+      "targetTemp": 20,
+      "ip": "192.168.1.143"
+    },
+    {
+      "uid": "3e30",
+      "name": "Bedroom 3",
+      "state": "known",
+      "configured_demand": "HEAT",
+      "mode": "HEAT",
+      "roomTemp": 20,
+      "targetTemp": 19.5,
+      "ip": "192.168.1.195"
+    }
+  ],
+  "member_count": 4,
+  "status": "ok",
+  "locked_mode": null,
+  "locked_by": "",
+  "conflicts": [],
+  "unknown_members": [],
+  "warnings": [],
+  "slice": {
+    "enabled": true,
+    "min_slice_s": 300,
+    "max_slice_s": 1800,
+    "settle_s": 180,
+    "available": true,
+    "active": true,
+    "mode": "heat",
+    "phase": "run",
+    "elapsed_s": 10584,
+    "decide_s": 1800,
+    "coordinator": "3e30",
+    "is_coordinator": false,
+    "members": [
+      {
+        "uid": "6dac",
+        "fresh": true,
+        "capable": true,
+        "wants": "none",
+        "need": "yes",
+        "directive": "free"
+      },
+      {
+        "uid": "e6c8",
+        "fresh": true,
+        "capable": true,
+        "wants": "none",
+        "need": "yes",
+        "directive": "free"
+      },
+      {
+        "uid": "e6ec",
+        "fresh": true,
+        "capable": true,
+        "wants": "none",
+        "need": "yes",
+        "directive": "free"
+      },
+      {
+        "uid": "3e30",
+        "fresh": true,
+        "capable": true,
+        "wants": "heat",
+        "need": "yes",
+        "directive": "run"
+      }
+    ]
+  }
+}

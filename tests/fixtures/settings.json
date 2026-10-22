@@ -1,0 +1,56 @@
+{
+  "power": "OFF",
+  "mode": "COOL",
+  "temperature": 16,
+  "fan": "2",
+  "vane": "AUTO",
+  "wideVane": "|",
+  "connected": true,
+  "temp_unit": "C",
+  "lang": "",
+  "caps": {
+    "wideVane": {
+      "detected": "unsupported",
+      "override": "auto",
+      "detecting": false,
+      "show": false
+    }
+  },
+  "roomTemperature": 17.5,
+  "roomSensor": {
+    "state": "ok",
+    "temp": 17.399999618530273,
+    "n_fresh": 1,
+    "sensors": [
+      {
+        "name": "A4:C1:38:00:00:01",
+        "fresh": true,
+        "temp": 17.399999618530273,
+        "age_s": 25
+      }
+    ]
+  },
+  "operating": false,
+  "compressorFrequency": 0,
+  "park": {
+    "enabled": true,
+    "state": "off",
+    "parked": false,
+    "reason": "",
+    "unit_on": false,
+    "satisfied": false,
+    "held": false,
+    "forced": false,
+    "slicing": true,
+    "quiet_fan": false,
+    "room_sensor": true,
+    "next_probe_s": null
+  },
+  "runtimeHours": 0,
+  "inputPowerW": 0,
+  "energyKwh": 0,
+  "subMode": "NORMAL",
+  "stage": "IDLE",
+  "errorCode": "No Error",
+  "fault": false
+}

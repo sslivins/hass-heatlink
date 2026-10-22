@@ -1,0 +1,30 @@
+{
+  "enabled": true,
+  "delta_c": 0.5,
+  "min_off_s": 300,
+  "probe_enabled": false,
+  "probe_interval_s": 900,
+  "probe_duration_s": 120,
+  "shared": true,
+  "shared_fields": [
+    "enabled",
+    "min_off_s",
+    "probe_enabled",
+    "probe_interval_s",
+    "probe_duration_s"
+  ],
+  "status": {
+    "enabled": true,
+    "state": "off",
+    "parked": false,
+    "reason": "",
+    "unit_on": false,
+    "satisfied": false,
+    "held": false,
+    "forced": false,
+    "slicing": true,
+    "quiet_fan": false,
+    "room_sensor": true,
+    "next_probe_s": null
+  }
+}

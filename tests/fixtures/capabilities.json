@@ -1,0 +1,10 @@
+{
+  "wideVane": {
+    "detected": "unsupported",
+    "override": "auto",
+    "detecting": false,
+    "show": false
+  },
+  "unit_connected": true,
+  "unit_on": false
+}

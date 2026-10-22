@@ -1,0 +1,16 @@
+{
+  "uid": "6dac",
+  "name": "Bedroom 1",
+  "pv": 1,
+  "version": "1.5.2",
+  "ghash": "bb66e0db",
+  "glabel": "Bedrooms",
+  "unit_connected": true,
+  "power": "OFF",
+  "mode": "COOL",
+  "operating": false,
+  "roomTemp": 17.399999618530273,
+  "rs": "ok",
+  "targetTemp": 16,
+  "freq": 0
+}

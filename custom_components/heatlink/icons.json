@@ -1,0 +1,54 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "parked": { "default": "mdi:parking" },
+      "held": { "default": "mdi:timer-sand" },
+      "defrost": { "default": "mdi:snowflake-melt" },
+      "mode_conflict": { "default": "mdi:swap-horizontal-bold" }
+    },
+    "number": {
+      "park_delta": { "default": "mdi:thermometer-chevron-up" },
+      "park_min_off": { "default": "mdi:timer-off-outline" },
+      "probe_interval": { "default": "mdi:fan-clock" },
+      "probe_duration": { "default": "mdi:fan" },
+      "tandem_min_turn": { "default": "mdi:timer-outline" },
+      "tandem_max_turn": { "default": "mdi:timer-alert-outline" },
+      "tandem_settle": { "default": "mdi:timer-pause-outline" }
+    },
+    "sensor": {
+      "compressor_frequency": { "default": "mdi:sine-wave" },
+      "fault_code": { "default": "mdi:alert-circle-outline" },
+      "park_state": { "default": "mdi:parking" },
+      "tandem_turn_in": { "default": "mdi:timer-sand" },
+      "reset_reason": { "default": "mdi:restart-alert" },
+      "brownouts": { "default": "mdi:flash-alert" },
+      "wifi_drops": { "default": "mdi:wifi-alert" },
+      "boot_count": { "default": "mdi:counter" },
+      "free_memory": { "default": "mdi:memory" },
+      "tandem_state": {
+        "default": "mdi:sync",
+        "state": {
+          "off": "mdi:sync-off",
+          "heating": "mdi:fire",
+          "cooling": "mdi:snowflake",
+          "switching_to_heat": "mdi:swap-horizontal",
+          "switching_to_cool": "mdi:swap-horizontal"
+        }
+      },
+      "tandem_turn_ends": { "default": "mdi:timer-outline" }
+    },
+    "switch": {
+      "park": { "default": "mdi:parking" },
+      "probe": { "default": "mdi:fan-clock" },
+      "tandem": { "default": "mdi:sync" }
+    },
+    "button": {
+      "reset_brownouts": { "default": "mdi:counter" },
+      "reset_wifi_drops": { "default": "mdi:counter" },
+      "reset_supply_voltage_min": { "default": "mdi:counter" }
+    }
+  },
+  "services": {
+    "set_remote_temperature": { "service": "mdi:home-thermometer" }
+  }
+}
