@@ -98,6 +98,7 @@ SETTINGS_SENSORS: tuple[SettingsSensorDescription, ...] = (
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        suggested_display_precision=1,
         entity_registry_enabled_default=False,
         value_fn=lambda s: s.room_temperature,
     ),

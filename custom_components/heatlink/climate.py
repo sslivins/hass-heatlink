@@ -98,7 +98,6 @@ class HeatLinkClimate(HeatLinkUnitEntity[Settings], ClimateEntity):
     _attr_translation_key = "heatlink"
     _attr_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_precision = PRECISION_TENTHS
-    _attr_target_temperature_step = 0.5
     _attr_min_temp = MIN_TEMP
     _attr_max_temp = MAX_TEMP
     _attr_fan_modes = FAN_MODES
@@ -108,6 +107,16 @@ class HeatLinkClimate(HeatLinkUnitEntity[Settings], ClimateEntity):
     def __init__(self, runtime: HeatLinkRuntime) -> None:
         super().__init__(runtime, runtime.settings, "climate")
         self._times: dict[str, datetime | None] = {}
+
+    @property
+    def target_temperature_step(self) -> float:
+        # The head works in 0.5 °C steps; whole degrees suit °F displays.
+        if (
+            self.hass is not None
+            and self.hass.config.units.temperature_unit != self.temperature_unit
+        ):
+            return 1.0
+        return 0.5
 
     # ── state ───────────────────────────────────────────────────────────
 

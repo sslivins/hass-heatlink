@@ -18,12 +18,19 @@ from homeassistant.components.climate import (
     DOMAIN as CLIMATE_DOMAIN,
 )
 from homeassistant.config_entries import ConfigEntryState
-from homeassistant.const import ATTR_ENTITY_ID, ATTR_TEMPERATURE, STATE_OFF, STATE_ON
+from homeassistant.const import (
+    ATTR_ENTITY_ID,
+    ATTR_TEMPERATURE,
+    STATE_OFF,
+    STATE_ON,
+    UnitOfTemperature,
+)
 from homeassistant.core import Event, HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers import issue_registry as ir
+from homeassistant.util.unit_system import US_CUSTOMARY_SYSTEM
 from pyheatlink import HeatLinkConflictError, HeatLinkConnectionError, HeatLinkScopeError
 from pytest_homeassistant_custom_component.common import async_fire_time_changed
 
@@ -212,6 +219,26 @@ async def test_outdoor_writes(hass: HomeAssistant, heads: Heads, head: FakeHead,
         blocking=True,
     )
     client.set_park.assert_awaited_with(delta_c=1.2)
+
+
+async def test_park_delta_in_fahrenheit(
+    hass: HomeAssistant, heads: Heads, head: FakeHead, client
+) -> None:
+    hass.config.units = US_CUSTOMARY_SYSTEM
+    await setup_head(hass, head)
+    eid = entity_id(hass, "number", "6dac_park_delta")
+    state = hass.states.get(eid)
+    assert state is not None
+    assert state.state == "0.9"
+    assert state.attributes["unit_of_measurement"] == UnitOfTemperature.FAHRENHEIT
+    assert (state.attributes["min"], state.attributes["max"]) == (0.9, 5.4)
+    await hass.services.async_call(
+        "number", "set_value", {ATTR_ENTITY_ID: eid, "value": 1.8}, blocking=True
+    )
+    client.set_park.assert_awaited_with(delta_c=1.0)
+    climate = hass.states.get(CLIMATE)
+    assert climate is not None
+    assert climate.attributes["target_temp_step"] == 1.0
 
 
 async def test_buttons(hass: HomeAssistant, heads: Heads, head: FakeHead, client) -> None:
