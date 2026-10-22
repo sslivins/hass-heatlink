@@ -133,7 +133,15 @@ class HeatLinkConfigFlow(ConfigFlow, domain=DOMAIN):
         uid = discovery_info.properties.get("uid")
         if not uid:
             return self.async_abort(reason="not_heatlink")
-        host = str(discovery_info.ip_address)
+        return await self._async_discovered(str(discovery_info.ip_address), uid)
+
+    async def async_step_integration_discovery(
+        self, discovery_info: dict[str, Any]
+    ) -> ConfigFlowResult:
+        """Rediscovered once a peer on the same outdoor unit can vouch for this head."""
+        return await self._async_discovered(discovery_info[CONF_HOST], discovery_info[CONF_UID])
+
+    async def _async_discovered(self, host: str, uid: str) -> ConfigFlowResult:
         await self.async_set_unique_id(uid)
         self._abort_if_unique_id_configured(updates={CONF_HOST: host})
         info, error = await self._async_info(host)
@@ -143,6 +151,10 @@ class HeatLinkConfigFlow(ConfigFlow, domain=DOMAIN):
             return self.async_abort(reason="not_heatlink")
         self._host, self._info = host, info
         self.context["title_placeholders"] = {"name": self._title()}
+        # Lets a head that loads later restart this flow as a one-click group confirm.
+        self.context[CONF_HOST] = host  # type: ignore[typeddict-unknown-key]
+        if info.group is not None and info.group.ghash:
+            self.context[CONF_GHASH] = info.group.ghash  # type: ignore[typeddict-unknown-key]
         return await self._async_step_credentials()
 
     async def _async_step_credentials(self) -> ConfigFlowResult:
