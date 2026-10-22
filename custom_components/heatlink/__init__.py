@@ -12,15 +12,20 @@ except ImportError:  # Home Assistant before the move to probatio
 from homeassistant.components.climate import ATTR_TEMPERATURE
 from homeassistant.components.frontend import add_extra_js_url
 from homeassistant.components.http import StaticPathConfig
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import (
+    SOURCE_INTEGRATION_DISCOVERY,
+    SOURCE_ZEROCONF,
+    ConfigEntry,
+)
 from homeassistant.const import ATTR_ENTITY_ID, CONF_HOST
-from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.core import HomeAssistant, ServiceCall, callback
 from homeassistant.exceptions import (
     ConfigEntryError,
     ConfigEntryNotReady,
     ServiceValidationError,
 )
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import discovery_flow
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType
@@ -31,7 +36,9 @@ from .const import (
     CARD_FILENAME,
     CARD_URL_BASE,
     CARD_VERSION,
+    CONF_GHASH,
     CONF_TOKEN,
+    CONF_UID,
     DOMAIN,
     MIN_API_VERSION,
     PLATFORMS,
@@ -159,7 +166,33 @@ async def async_setup_entry(hass: HomeAssistant, entry: HeatLinkConfigEntry) -> 
         _async_forget(hass, runtime)
         await runtime.async_shutdown()
         raise
+    _async_rediscover_peers(hass, runtime)
     return True
+
+
+@callback
+def _async_rediscover_peers(hass: HomeAssistant, runtime: HeatLinkRuntime) -> None:
+    """Restart discovered heads waiting for a token so they offer one-click setup."""
+    ghash = runtime.info.group.ghash if runtime.info.group else None
+    if not ghash or not runtime.admin:
+        return
+    configured = {e.unique_id for e in hass.config_entries.async_entries(DOMAIN)}
+    for flow in hass.config_entries.flow.async_progress_by_handler(DOMAIN):
+        context = flow["context"]
+        if (
+            flow.get("step_id") != "token"
+            or context.get("unique_id") in configured
+            or context.get("source") not in (SOURCE_ZEROCONF, SOURCE_INTEGRATION_DISCOVERY)
+            or context.get(CONF_GHASH) != ghash
+        ):
+            continue
+        hass.config_entries.flow.async_abort(flow["flow_id"])
+        discovery_flow.async_create_flow(
+            hass,
+            DOMAIN,
+            {"source": SOURCE_INTEGRATION_DISCOVERY},
+            {CONF_HOST: context[CONF_HOST], CONF_UID: context["unique_id"]},  # type: ignore[typeddict-item]
+        )
 
 
 def _async_forget(hass: HomeAssistant, runtime: HeatLinkRuntime) -> None:

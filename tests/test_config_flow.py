@@ -139,6 +139,23 @@ async def test_group_peer_falls_back_to_token(
     assert result["step_id"] == "token"
 
 
+async def test_waiting_peer_switches_to_one_click(
+    hass: HomeAssistant, heads: Heads, head: FakeHead
+) -> None:
+    peer = heads.add(FakeHead(uid="e6ec", name="Bedroom 2", host="192.168.1.143"))
+    first = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": config_entries.SOURCE_ZEROCONF}, data=zeroconf(peer.host, "e6ec")
+    )
+    assert first["step_id"] == "token"
+    await setup_head(hass, head)
+    await hass.async_block_till_done()
+    flows = hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+    assert [(f["context"]["source"], f["step_id"]) for f in flows] == [
+        (config_entries.SOURCE_INTEGRATION_DISCOVERY, "group_confirm")
+    ]
+    assert flows[0]["flow_id"] != first["flow_id"]
+
+
 async def test_reauth(hass: HomeAssistant, heads: Heads, head: FakeHead) -> None:
     entry = await setup_head(hass, head)
     result = await entry.start_reauth_flow(hass)
