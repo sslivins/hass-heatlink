@@ -162,6 +162,8 @@ class HeatLinkRuntime:
                 self._unsubs.append(
                     coordinator.async_add_listener(lambda: self.outdoor.notify(self.ghash))
                 )
+        if self.status.data is not None:
+            self._uptime = self.status.data.uptime_s
         self._unsubs.append(self.status.async_add_listener(self._async_status_updated))
 
     async def _async_probe_admin(self) -> None:
@@ -282,7 +284,7 @@ class HeatLinkRuntime:
     def _async_status_updated(self) -> None:
         """Keep the device name and firmware version in step with the head."""
         status = self.status.data
-        if status is None or self.device_id is None:
+        if status is None:
             return
         # Settings such as MQTT discovery change only with a reboot.
         if self._uptime is not None and status.uptime_s < self._uptime:
@@ -290,6 +292,8 @@ class HeatLinkRuntime:
                 self.hass, self._async_refresh_info_quietly(), f"heatlink {self.uid} info"
             )
         self._uptime = status.uptime_s
+        if self.device_id is None:
+            return
         registry = dr.async_get(self.hass)
         device = registry.async_get(self.device_id)
         if not isinstance(device, dr.DeviceEntry):
