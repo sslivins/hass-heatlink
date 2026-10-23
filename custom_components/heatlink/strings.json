@@ -123,12 +123,12 @@
           },
           "swing_horizontal_mode": {
             "state": {
-              "<<": "Far left",
-              "<": "Left",
-              "|": "Center",
-              ">": "Right",
-              ">>": "Far right",
-              "<>": "Split",
+              "far_left": "Far left",
+              "left": "Left",
+              "center": "Center",
+              "right": "Right",
+              "far_right": "Far right",
+              "split": "Split",
               "swing": "Swing"
             }
           }

@@ -35,7 +35,18 @@ HVAC_TO_MODE = {v: k for k, v in MODE_TO_HVAC.items()}
 
 FAN_MODES = ["auto", "quiet", "1", "2", "3", "4"]
 SWING_MODES = ["auto", "1", "2", "3", "4", "5", "swing"]
-WIDE_VANE_MODES = ["<<", "<", "|", ">", ">>", "<>", "swing"]
+# The head's wide-vane values, keyed by the HA mode (translation keys must be slugs).
+WIDE_VANE = {
+    "far_left": "<<",
+    "left": "<",
+    "center": "|",
+    "right": ">",
+    "far_right": ">>",
+    "split": "<>",
+    "swing": "swing",
+}
+WIDE_VANE_MODES = list(WIDE_VANE)
+WIDE_VANE_FROM_HEAD = {v: k for k, v in WIDE_VANE.items()}
 
 MIN_TEMP = 16.0
 MAX_TEMP = 31.0
@@ -223,7 +234,7 @@ class HeatLinkClimate(HeatLinkUnitEntity[Settings], ClimateEntity):
     def swing_horizontal_mode(self) -> str | None:
         if self.data is None or not self.data.wide_vane:
             return None
-        return self.data.wide_vane.lower()
+        return WIDE_VANE_FROM_HEAD.get(self.data.wide_vane.lower())
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -271,4 +282,6 @@ class HeatLinkClimate(HeatLinkUnitEntity[Settings], ClimateEntity):
         await self._async_send(vane=swing_mode)
 
     async def async_set_swing_horizontal_mode(self, swing_horizontal_mode: str) -> None:
-        await self._async_send(wide_vane=swing_horizontal_mode)
+        await self._async_send(
+            wide_vane=WIDE_VANE.get(swing_horizontal_mode, swing_horizontal_mode)
+        )

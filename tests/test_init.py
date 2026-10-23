@@ -9,7 +9,9 @@ import pytest
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.components.climate import (
     ATTR_HVAC_MODE,
+    ATTR_SWING_HORIZONTAL_MODE,
     SERVICE_SET_HVAC_MODE,
+    SERVICE_SET_SWING_HORIZONTAL_MODE,
     SERVICE_SET_TEMPERATURE,
     HVACAction,
     HVACMode,
@@ -173,6 +175,21 @@ async def test_climate_commands(hass: HomeAssistant, heads: Heads, head: FakeHea
     )
     client.set_climate.assert_awaited_with(power=False)
 
+    head.settings["caps"]["wideVane"]["show"] = True
+    head.settings["wideVane"] = "<<"
+    await hass.config_entries.async_reload(hass.config_entries.async_entries(DOMAIN)[0].entry_id)
+    await hass.async_block_till_done()
+    state = hass.states.get(CLIMATE)
+    assert state is not None
+    assert state.attributes["swing_horizontal_mode"] == "far_left"
+    assert "split" in state.attributes["swing_horizontal_modes"]
+    await hass.services.async_call(
+        CLIMATE_DOMAIN,
+        SERVICE_SET_SWING_HORIZONTAL_MODE,
+        {ATTR_ENTITY_ID: CLIMATE, ATTR_SWING_HORIZONTAL_MODE: "split"},
+        blocking=True,
+    )
+    client.set_climate.assert_awaited_with(wide_vane="<>")
     client.set_climate.side_effect = HeatLinkConflictError("Tandem is on", message="Tandem is on")
     with pytest.raises(HomeAssistantError):
         await hass.services.async_call(

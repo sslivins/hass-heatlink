@@ -127,12 +127,12 @@
           },
           "swing_horizontal_mode": {
             "state": {
-              "<<": "mdi:arrow-collapse-left",
-              "<": "mdi:arrow-left-thin",
-              "|": "mdi:arrow-up-thin",
-              ">": "mdi:arrow-right-thin",
-              ">>": "mdi:arrow-collapse-right",
-              "<>": "mdi:arrow-split-vertical",
+              "far_left": "mdi:arrow-collapse-left",
+              "left": "mdi:arrow-left-thin",
+              "center": "mdi:arrow-up-thin",
+              "right": "mdi:arrow-right-thin",
+              "far_right": "mdi:arrow-collapse-right",
+              "split": "mdi:arrow-split-vertical",
               "swing": "mdi:arrow-left-right"
             }
           }
