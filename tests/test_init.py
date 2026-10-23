@@ -80,8 +80,8 @@ async def test_setup_and_unload(hass: HomeAssistant, heads: Heads, head: FakeHea
     assert state.attributes["current_temperature"] == 17.4
     assert state.attributes[ATTR_TEMPERATURE] == 16
     assert state.attributes["outdoor_unit"] == "bb66e0db"
-    # Tandem is on, so the unit's own AUTO is hidden.
-    assert HVACMode.HEAT_COOL not in state.attributes["hvac_modes"]
+    # HeatLink's own Auto works under Tandem, so heat/cool is always offered.
+    assert HVACMode.HEAT_COOL in state.attributes["hvac_modes"]
 
     assert await hass.config_entries.async_unload(entry.entry_id)
     assert entry.state is ConfigEntryState.NOT_LOADED
@@ -198,6 +198,35 @@ async def test_climate_commands(hass: HomeAssistant, heads: Heads, head: FakeHea
             {ATTR_ENTITY_ID: CLIMATE, ATTR_HVAC_MODE: HVACMode.HEAT_COOL},
             blocking=True,
         )
+
+
+async def test_managed_auto_range(
+    hass: HomeAssistant, heads: Heads, head: FakeHead, client
+) -> None:
+    head.settings.update(power="ON", mode="AUTO", temperature=24, operating=True)
+    head.settings["park"].update(state="off", held=False, parked=False)
+    head.settings["auto"] = {
+        "managed": True,
+        "available": True,
+        "heat_to": 20,
+        "cool_to": 24,
+        "dir": "COOL",
+    }
+    await setup_head(hass, head)
+    state = hass.states.get(CLIMATE)
+    assert state is not None
+    assert state.state == HVACMode.HEAT_COOL
+    assert state.attributes["target_temp_low"] == 20
+    assert state.attributes["target_temp_high"] == 24
+    assert state.attributes.get(ATTR_TEMPERATURE) is None
+    assert state.attributes["hvac_action"] == HVACAction.COOLING
+    await hass.services.async_call(
+        CLIMATE_DOMAIN,
+        SERVICE_SET_TEMPERATURE,
+        {ATTR_ENTITY_ID: CLIMATE, "target_temp_low": 19.5, "target_temp_high": 23},
+        blocking=True,
+    )
+    client.set_climate.assert_awaited_with(heat_to=19.5, cool_to=23.0)
 
 
 async def test_hvac_action_held(hass: HomeAssistant, heads: Heads, head: FakeHead) -> None:
