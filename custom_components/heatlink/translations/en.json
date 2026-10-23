@@ -67,17 +67,35 @@
   },
   "entity": {
     "binary_sensor": {
-      "parked": { "name": "Parked" },
-      "held": { "name": "Waiting for Tandem" },
-      "defrost": { "name": "Defrosting" },
-      "fault": { "name": "Fault" },
-      "unit_connected": { "name": "Unit connected" },
-      "mode_conflict": { "name": "Mode conflict" }
+      "parked": {
+        "name": "Parked"
+      },
+      "held": {
+        "name": "Waiting for Tandem"
+      },
+      "defrost": {
+        "name": "Defrosting"
+      },
+      "fault": {
+        "name": "Fault"
+      },
+      "unit_connected": {
+        "name": "Unit connected"
+      },
+      "mode_conflict": {
+        "name": "Mode conflict"
+      }
     },
     "button": {
-      "reset_brownouts": { "name": "Reset brownout count" },
-      "reset_wifi_drops": { "name": "Reset Wi-Fi drop count" },
-      "reset_supply_voltage_min": { "name": "Reset minimum supply voltage" }
+      "reset_brownouts": {
+        "name": "Reset brownout count"
+      },
+      "reset_wifi_drops": {
+        "name": "Reset Wi-Fi drop count"
+      },
+      "reset_supply_voltage_min": {
+        "name": "Reset minimum supply voltage"
+      }
     },
     "climate": {
       "heatlink": {
@@ -86,28 +104,70 @@
             "state": {
               "auto": "Auto",
               "quiet": "Quiet",
-              "1": "1",
-              "2": "2",
-              "3": "3",
-              "4": "4"
+              "1": "Speed 1",
+              "2": "Speed 2",
+              "3": "Speed 3",
+              "4": "Speed 4"
+            }
+          },
+          "swing_mode": {
+            "state": {
+              "auto": "Auto",
+              "1": "Top",
+              "2": "Upper",
+              "3": "Middle",
+              "4": "Lower",
+              "5": "Bottom",
+              "swing": "Swing"
+            }
+          },
+          "swing_horizontal_mode": {
+            "state": {
+              "far_left": "Far left",
+              "left": "Left",
+              "center": "Center",
+              "right": "Right",
+              "far_right": "Far right",
+              "split": "Split",
+              "swing": "Swing"
             }
           }
         }
       }
     },
     "number": {
-      "park_delta": { "name": "Off-at-setpoint restart threshold" },
-      "park_min_off": { "name": "Off-at-setpoint minimum off time" },
-      "probe_interval": { "name": "Air check interval" },
-      "probe_duration": { "name": "Air check duration" },
-      "tandem_min_turn": { "name": "Tandem minimum turn" },
-      "tandem_max_turn": { "name": "Tandem maximum turn" },
-      "tandem_settle": { "name": "Tandem changeover pause" }
+      "park_delta": {
+        "name": "Off-at-setpoint restart threshold"
+      },
+      "park_min_off": {
+        "name": "Off-at-setpoint minimum off time"
+      },
+      "probe_interval": {
+        "name": "Air check interval"
+      },
+      "probe_duration": {
+        "name": "Air check duration"
+      },
+      "tandem_min_turn": {
+        "name": "Tandem minimum turn"
+      },
+      "tandem_max_turn": {
+        "name": "Tandem maximum turn"
+      },
+      "tandem_settle": {
+        "name": "Tandem changeover pause"
+      }
     },
     "sensor": {
-      "room_temperature": { "name": "Room temperature" },
-      "unit_temperature": { "name": "Unit temperature" },
-      "compressor_frequency": { "name": "Compressor frequency" },
+      "room_temperature": {
+        "name": "Room temperature"
+      },
+      "unit_temperature": {
+        "name": "Unit temperature"
+      },
+      "compressor_frequency": {
+        "name": "Compressor frequency"
+      },
       "fault_code": {
         "name": "Fault code",
         "state": {
@@ -127,15 +187,33 @@
           "checking": "Checking if the room needs a turn"
         }
       },
-      "tandem_turn_in": { "name": "Tandem turn in" },
-      "rssi": { "name": "Wi-Fi signal" },
-      "reset_reason": { "name": "Last reset reason" },
-      "brownouts": { "name": "Brownouts" },
-      "wifi_drops": { "name": "Wi-Fi drops" },
-      "boot_count": { "name": "Boot count" },
-      "supply_voltage_min": { "name": "Minimum supply voltage" },
-      "free_memory": { "name": "Free memory" },
-      "last_boot": { "name": "Last boot" },
+      "tandem_turn_in": {
+        "name": "Tandem turn in"
+      },
+      "rssi": {
+        "name": "Wi-Fi signal"
+      },
+      "reset_reason": {
+        "name": "Last reset reason"
+      },
+      "brownouts": {
+        "name": "Brownouts"
+      },
+      "wifi_drops": {
+        "name": "Wi-Fi drops"
+      },
+      "boot_count": {
+        "name": "Boot count"
+      },
+      "supply_voltage_min": {
+        "name": "Minimum supply voltage"
+      },
+      "free_memory": {
+        "name": "Free memory"
+      },
+      "last_boot": {
+        "name": "Last boot"
+      },
       "tandem_state": {
         "name": "Tandem",
         "state": {
@@ -148,12 +226,20 @@
           "switching_to_cool": "Switching to cool"
         }
       },
-      "tandem_turn_ends": { "name": "Tandem turn ends in" }
+      "tandem_turn_ends": {
+        "name": "Tandem turn ends in"
+      }
     },
     "switch": {
-      "park": { "name": "Off-at-setpoint" },
-      "probe": { "name": "Air checks" },
-      "tandem": { "name": "Tandem" }
+      "park": {
+        "name": "Off-at-setpoint"
+      },
+      "probe": {
+        "name": "Air checks"
+      },
+      "tandem": {
+        "name": "Tandem"
+      }
     }
   },
   "exceptions": {
