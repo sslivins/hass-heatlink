@@ -84,6 +84,7 @@ class HeatLinkRuntime:
         self.device_id: str | None = None
         self.outdoor_device_id: str | None = None
         self._fault: tuple[bool, str | None] | None = None
+        self._uptime: int | None = None
         self._unsubs: list[CALLBACK_TYPE] = []
 
         jitter = _jitter(self.uid)
@@ -262,11 +263,20 @@ class HeatLinkRuntime:
     # ── listeners ───────────────────────────────────────────────────────
 
     async def _async_fetch_update(self) -> UpdateInfo:
+        await self._async_refresh_info()
+        return await self.client.get_update()
+
+    async def _async_refresh_info(self) -> None:
         info = await self.client.get_info()
         if info.uid == self.uid:
             self.info = info
             self._async_check_mqtt_issue()
-        return await self.client.get_update()
+
+    async def _async_refresh_info_quietly(self) -> None:
+        try:
+            await self._async_refresh_info()
+        except HeatLinkError as err:
+            _LOGGER.debug("%s: could not re-read /api/info after a reboot: %s", self.name, err)
 
     @callback
     def _async_status_updated(self) -> None:
@@ -274,6 +284,12 @@ class HeatLinkRuntime:
         status = self.status.data
         if status is None or self.device_id is None:
             return
+        # Settings such as MQTT discovery change only with a reboot.
+        if self._uptime is not None and status.uptime_s < self._uptime:
+            self.entry.async_create_background_task(
+                self.hass, self._async_refresh_info_quietly(), f"heatlink {self.uid} info"
+            )
+        self._uptime = status.uptime_s
         registry = dr.async_get(self.hass)
         device = registry.async_get(self.device_id)
         if not isinstance(device, dr.DeviceEntry):

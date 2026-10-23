@@ -1,30 +1,70 @@
 {
   "entity": {
     "binary_sensor": {
-      "parked": { "default": "mdi:parking" },
-      "held": { "default": "mdi:timer-sand" },
-      "defrost": { "default": "mdi:snowflake-melt" },
-      "mode_conflict": { "default": "mdi:swap-horizontal-bold" }
+      "parked": {
+        "default": "mdi:parking"
+      },
+      "held": {
+        "default": "mdi:timer-sand"
+      },
+      "defrost": {
+        "default": "mdi:snowflake-melt"
+      },
+      "mode_conflict": {
+        "default": "mdi:swap-horizontal-bold"
+      }
     },
     "number": {
-      "park_delta": { "default": "mdi:thermometer-chevron-up" },
-      "park_min_off": { "default": "mdi:timer-off-outline" },
-      "probe_interval": { "default": "mdi:fan-clock" },
-      "probe_duration": { "default": "mdi:fan" },
-      "tandem_min_turn": { "default": "mdi:timer-outline" },
-      "tandem_max_turn": { "default": "mdi:timer-alert-outline" },
-      "tandem_settle": { "default": "mdi:timer-pause-outline" }
+      "park_delta": {
+        "default": "mdi:thermometer-chevron-up"
+      },
+      "park_min_off": {
+        "default": "mdi:timer-off-outline"
+      },
+      "probe_interval": {
+        "default": "mdi:fan-clock"
+      },
+      "probe_duration": {
+        "default": "mdi:fan"
+      },
+      "tandem_min_turn": {
+        "default": "mdi:timer-outline"
+      },
+      "tandem_max_turn": {
+        "default": "mdi:timer-alert-outline"
+      },
+      "tandem_settle": {
+        "default": "mdi:timer-pause-outline"
+      }
     },
     "sensor": {
-      "compressor_frequency": { "default": "mdi:sine-wave" },
-      "fault_code": { "default": "mdi:alert-circle-outline" },
-      "park_state": { "default": "mdi:parking" },
-      "tandem_turn_in": { "default": "mdi:timer-sand" },
-      "reset_reason": { "default": "mdi:restart-alert" },
-      "brownouts": { "default": "mdi:flash-alert" },
-      "wifi_drops": { "default": "mdi:wifi-alert" },
-      "boot_count": { "default": "mdi:counter" },
-      "free_memory": { "default": "mdi:memory" },
+      "compressor_frequency": {
+        "default": "mdi:sine-wave"
+      },
+      "fault_code": {
+        "default": "mdi:alert-circle-outline"
+      },
+      "park_state": {
+        "default": "mdi:parking"
+      },
+      "tandem_turn_in": {
+        "default": "mdi:timer-sand"
+      },
+      "reset_reason": {
+        "default": "mdi:restart-alert"
+      },
+      "brownouts": {
+        "default": "mdi:flash-alert"
+      },
+      "wifi_drops": {
+        "default": "mdi:wifi-alert"
+      },
+      "boot_count": {
+        "default": "mdi:counter"
+      },
+      "free_memory": {
+        "default": "mdi:memory"
+      },
       "tandem_state": {
         "default": "mdi:sync",
         "state": {
@@ -35,20 +75,74 @@
           "switching_to_cool": "mdi:swap-horizontal"
         }
       },
-      "tandem_turn_ends": { "default": "mdi:timer-outline" }
+      "tandem_turn_ends": {
+        "default": "mdi:timer-outline"
+      }
     },
     "switch": {
-      "park": { "default": "mdi:parking" },
-      "probe": { "default": "mdi:fan-clock" },
-      "tandem": { "default": "mdi:sync" }
+      "park": {
+        "default": "mdi:parking"
+      },
+      "probe": {
+        "default": "mdi:fan-clock"
+      },
+      "tandem": {
+        "default": "mdi:sync"
+      }
     },
     "button": {
-      "reset_brownouts": { "default": "mdi:counter" },
-      "reset_wifi_drops": { "default": "mdi:counter" },
-      "reset_supply_voltage_min": { "default": "mdi:counter" }
+      "reset_brownouts": {
+        "default": "mdi:counter"
+      },
+      "reset_wifi_drops": {
+        "default": "mdi:counter"
+      },
+      "reset_supply_voltage_min": {
+        "default": "mdi:counter"
+      }
+    },
+    "climate": {
+      "heatlink": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "auto": "mdi:fan-auto",
+              "quiet": "mdi:fan-minus",
+              "1": "mdi:fan-speed-1",
+              "2": "mdi:fan-speed-2",
+              "3": "mdi:fan-speed-3",
+              "4": "mdi:fan-plus"
+            }
+          },
+          "swing_mode": {
+            "state": {
+              "auto": "mdi:arrow-oscillating",
+              "1": "mdi:arrow-up-thin",
+              "2": "mdi:arrow-top-right-thin",
+              "3": "mdi:arrow-right-thin",
+              "4": "mdi:arrow-bottom-right-thin",
+              "5": "mdi:arrow-down-thin",
+              "swing": "mdi:arrow-up-down"
+            }
+          },
+          "swing_horizontal_mode": {
+            "state": {
+              "<<": "mdi:arrow-collapse-left",
+              "<": "mdi:arrow-left-thin",
+              "|": "mdi:arrow-up-thin",
+              ">": "mdi:arrow-right-thin",
+              ">>": "mdi:arrow-collapse-right",
+              "<>": "mdi:arrow-split-vertical",
+              "swing": "mdi:arrow-left-right"
+            }
+          }
+        }
+      }
     }
   },
   "services": {
-    "set_remote_temperature": { "service": "mdi:home-thermometer" }
+    "set_remote_temperature": {
+      "service": "mdi:home-thermometer"
+    }
   }
 }

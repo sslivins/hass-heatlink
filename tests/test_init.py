@@ -388,6 +388,18 @@ async def test_mqtt_discovery_issue(hass: HomeAssistant, heads: Heads, head: Fak
     assert ir.async_get(hass).async_get_issue(DOMAIN, "mqtt_discovery_6dac")
 
 
+async def test_mqtt_issue_clears_after_reboot(
+    hass: HomeAssistant, heads: Heads, head: FakeHead
+) -> None:
+    head.info["mqtt"]["discovery"] = True
+    entry = await setup_head(hass, head)
+    head.info["mqtt"]["discovery"] = False
+    head.status["uptime_s"] = 30
+    await entry.runtime_data.status.async_refresh()
+    await hass.async_block_till_done()
+    assert ir.async_get(hass).async_get_issue(DOMAIN, "mqtt_discovery_6dac") is None
+
+
 async def test_remote_temperature_binding(
     hass: HomeAssistant, heads: Heads, head: FakeHead, client: MagicMock
 ) -> None:
