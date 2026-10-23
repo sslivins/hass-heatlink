@@ -41,8 +41,8 @@ a new IP address, discovery updates it automatically, or use **Reconfigure**.
 
 **Per head**
 - A climate entity: modes, target temperature, fan speed, vane and (where the unit has one)
-  wide vane. While Tandem is on, the unit's own Auto mode is hidden because Tandem does the
-  heat/cool switching.
+  wide vane. Heat/Cool is the unit's own Auto when Tandem is off; while Tandem is on it's
+  HeatLink's Auto, with a heat-to/cool-to range (needs firmware with Auto under Tandem).
 - The room temperature (from the head's BLE room sensor when it has one), unit temperature,
   compressor frequency, fault code, Off-at-setpoint state and, while the head waits for its
   Tandem turn, when that turn comes up.

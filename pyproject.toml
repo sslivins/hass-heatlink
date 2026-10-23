@@ -22,7 +22,7 @@ tests = [
     "ruff>=0.6.0",
     "mypy>=1.10.0",
     "syrupy>=4.0",
-    "pyheatlink==0.1.1",
+    "pyheatlink==0.1.2",
 ]
 
 [project.urls]

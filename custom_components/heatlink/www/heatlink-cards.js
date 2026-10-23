@@ -284,7 +284,9 @@ class HeatLinkHouseCard extends HTMLElement {
             <div class="info"><div class="name">${escapeHtml(name)}</div>
               <div class="sub">${escapeHtml(status ? status.text : mode === "off" ? (hass.formatEntityState ? hass.formatEntityState(s) : "Off") : label)}</div></div>
             <div class="temps"><span class="cur">${fmt(s.attributes.current_temperature)} ${unit(s)}</span>
-              ${mode !== "off" && s.attributes.temperature != null ? `<span class="tgt">→ ${fmt(s.attributes.temperature)}</span>` : ""}</div>
+              ${mode === "off" ? "" : s.attributes.target_temp_low != null && s.attributes.target_temp_high != null
+                ? `<span class="tgt">→ ${fmt(s.attributes.target_temp_low)}–${fmt(s.attributes.target_temp_high)}</span>`
+                : s.attributes.temperature != null ? `<span class="tgt">→ ${fmt(s.attributes.temperature)}</span>` : ""}</div>
           </div>`;
       }
     }

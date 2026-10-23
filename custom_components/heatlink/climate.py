@@ -7,6 +7,8 @@ from typing import Any
 
 from homeassistant.components.climate import (
     ATTR_HVAC_MODE,
+    ATTR_TARGET_TEMP_HIGH,
+    ATTR_TARGET_TEMP_LOW,
     ClimateEntity,
     ClimateEntityFeature,
     HVACAction,
@@ -16,7 +18,7 @@ from homeassistant.const import ATTR_TEMPERATURE, PRECISION_TENTHS, UnitOfTemper
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.util import dt as dt_util
-from pyheatlink import Settings
+from pyheatlink import AutoRange, Settings
 
 from . import HeatLinkConfigEntry
 from .entity import HeatLinkUnitEntity, async_call
@@ -132,27 +134,34 @@ class HeatLinkClimate(HeatLinkUnitEntity[Settings], ClimateEntity):
     # ── state ───────────────────────────────────────────────────────────
 
     @property
-    def _tandem_on(self) -> bool:
-        park = self.data.park if self.data is not None else None
-        if park is not None and park.slicing:
-            return True
-        group = self.runtime.group
-        tandem = group.data.tandem if group is not None and group.data is not None else None
-        return tandem is not None and tandem.enabled
+    def _auto_range(self) -> AutoRange | None:
+        """HeatLink's heat-to/cool-to Auto (Tandem only); None for the unit's own AUTO."""
+        s = self.data
+        auto = s.auto if s is not None else None
+        if auto is None or not auto.managed or not s.is_on:
+            return None
+        return auto
 
     @property
     def hvac_modes(self) -> list[HVACMode]:
-        modes = [HVACMode.OFF, HVACMode.HEAT, HVACMode.COOL, HVACMode.DRY, HVACMode.FAN_ONLY]
-        # Tandem takes turns between heat and cool itself; the unit's AUTO
-        # would fight it, and the head rejects it.
-        if not self._tandem_on or self.hvac_mode == HVACMode.HEAT_COOL:
-            modes.insert(1, HVACMode.HEAT_COOL)
-        return modes
+        return [
+            HVACMode.OFF,
+            HVACMode.HEAT_COOL,
+            HVACMode.HEAT,
+            HVACMode.COOL,
+            HVACMode.DRY,
+            HVACMode.FAN_ONLY,
+        ]
 
     @property
     def supported_features(self) -> ClimateEntityFeature:
+        target = (
+            ClimateEntityFeature.TARGET_TEMPERATURE_RANGE
+            if self._auto_range is not None
+            else ClimateEntityFeature.TARGET_TEMPERATURE
+        )
         features = (
-            ClimateEntityFeature.TARGET_TEMPERATURE
+            target
             | ClimateEntityFeature.FAN_MODE
             | ClimateEntityFeature.SWING_MODE
             | ClimateEntityFeature.TURN_ON
@@ -203,6 +212,8 @@ class HeatLinkClimate(HeatLinkUnitEntity[Settings], ClimateEntity):
             return HVACAction.COOLING
         if mode == "DRY":
             return HVACAction.DRYING
+        if (auto := self._auto_range) is not None:
+            return HVACAction.COOLING if auto.dir.upper() == "COOL" else HVACAction.HEATING
         current, target = self.current_temperature, s.temperature
         if current is not None and target is not None and current > target:
             return HVACAction.COOLING
@@ -220,7 +231,19 @@ class HeatLinkClimate(HeatLinkUnitEntity[Settings], ClimateEntity):
 
     @property
     def target_temperature(self) -> float | None:
-        return self.data.temperature if self.data is not None else None
+        if self.data is None or self._auto_range is not None:
+            return None
+        return self.data.temperature
+
+    @property
+    def target_temperature_low(self) -> float | None:
+        auto = self._auto_range
+        return auto.heat_to if auto is not None else None
+
+    @property
+    def target_temperature_high(self) -> float | None:
+        auto = self._auto_range
+        return auto.cool_to if auto is not None else None
 
     @property
     def fan_mode(self) -> str | None:
@@ -267,6 +290,10 @@ class HeatLinkClimate(HeatLinkUnitEntity[Settings], ClimateEntity):
         send: dict[str, Any] = {}
         if (temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             send["temperature"] = float(temp)
+        if (low := kwargs.get(ATTR_TARGET_TEMP_LOW)) is not None:
+            send["heat_to"] = float(low)
+        if (high := kwargs.get(ATTR_TARGET_TEMP_HIGH)) is not None:
+            send["cool_to"] = float(high)
         if (mode := kwargs.get(ATTR_HVAC_MODE)) is not None:
             if mode == HVACMode.OFF:
                 send["power"] = False
