@@ -218,7 +218,7 @@ async def test_managed_auto_range(
     assert state.state == HVACMode.HEAT_COOL
     assert state.attributes["target_temp_low"] == 20
     assert state.attributes["target_temp_high"] == 24
-    assert state.attributes[ATTR_TEMPERATURE] is None
+    assert state.attributes.get(ATTR_TEMPERATURE) is None
     assert state.attributes["hvac_action"] == HVACAction.COOLING
     await hass.services.async_call(
         CLIMATE_DOMAIN,
